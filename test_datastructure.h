@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-void sparse_set_new__initializes_and_returns(void);
+void sparse_set_new__succeeds(void);
 
 void sparse_set_push__succeds(void);
 void sparse_set_push__fails_if_element_already_exists(void);

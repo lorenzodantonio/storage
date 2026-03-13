@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdint.h>
 
-void sparse_set_new__initializes_and_returns(void) {
+void sparse_set_new__succeeds(void) {
   struct sparse_set *s = sparse_set_new(8);
   assert(s != NULL);
   assert(s->capacity == 8);

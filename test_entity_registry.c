@@ -1,7 +1,7 @@
 #include "entity_registry.h"
 #include <assert.h>
 
-void entity_registry_new__initializes_and_returns(void) {
+void entity_registry_new__succeeds(void) {
   struct entity_registry *r = entity_registry_new(16);
   assert(r->count == 0);
   assert(r->head == 0);
@@ -25,6 +25,14 @@ void entity_registry_delete__fails_if_entity_does_not_exist(void) {
   entity_registry_free(r);
 }
 
+void entity_registry_delete__fails_if_entity_already_deleted(void) {
+  struct entity_registry *r = entity_registry_new(16);
+  entity_registry_next(r);
+  assert(entity_registry_delete(r, 0) == 0);
+  assert(entity_registry_delete(r, 0) == -1);
+  entity_registry_free(r);
+}
+
 void entity_registry_next__succeeds(void) {
   struct entity_registry *r = entity_registry_new(16);
   size_t id = entity_registry_next(r);
@@ -42,9 +50,15 @@ void entity_registry_next__reuse_last_deleted(void) {
   entity_registry_free(r);
 }
 
-void entity_registry_exists__finds_id_if_exists(void) {
+void entity_registry_exists__succeeds(void) {
   struct entity_registry *r = entity_registry_new(16);
   size_t id = entity_registry_next(r);
-  assert(entity_registry_exists(r, id) == 0);
+  assert(entity_registry_exists(r, id) == 1);
+  entity_registry_free(r);
+}
+
+void entity_registry_exists__fails(void) {
+  struct entity_registry *r = entity_registry_new(16);
+  assert(entity_registry_exists(r, 100) == 0);
   entity_registry_free(r);
 }

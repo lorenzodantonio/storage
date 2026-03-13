@@ -8,7 +8,9 @@ int sparse_set_init(struct sparse_set *set, size_t capacity) {
   set->sparse = malloc(sizeof(size_t) * capacity);
   set->dense = malloc(sizeof(size_t) * capacity);
 
-  memset(set->sparse, SIZE_MAX, capacity * sizeof(size_t));
+  for (size_t i = 0; i < capacity; i++) {
+    set->sparse[i] = SIZE_MAX;
+  }
 
   set->count = 0;
   set->capacity = capacity;

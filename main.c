@@ -1,3 +1,4 @@
+#include "component_registry.h"
 #include "entity_registry.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -6,6 +7,7 @@
 
 struct storage {
   struct entity_registry *entities;
+  struct component_registry *components;
 };
 
 struct storage *storage_new(size_t max_entities) {
@@ -24,6 +26,7 @@ struct storage *storage_new(size_t max_entities) {
 
 void storage_free(struct storage *s) {
   entity_registry_free(s->entities);
+  component_registry_free(s->components);
   free(s);
 }
 
