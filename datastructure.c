@@ -1,0 +1,81 @@
+#include "datastructure.h"
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+int sparse_set_init(struct sparse_set *set, size_t capacity) {
+  set->sparse = malloc(sizeof(size_t) * capacity);
+  set->dense = malloc(sizeof(size_t) * capacity);
+
+  memset(set->sparse, SIZE_MAX, capacity * sizeof(size_t));
+
+  set->count = 0;
+  set->capacity = capacity;
+
+  return 0;
+}
+
+struct sparse_set *sparse_set_new(size_t capacity) {
+  struct sparse_set *set = (struct sparse_set *)malloc(sizeof(*set));
+  sparse_set_init(set, capacity);
+  return set;
+}
+
+int sparse_set_push(struct sparse_set *set, size_t entity) {
+  if (set->sparse[entity] != SIZE_MAX) {
+    return -1;
+  }
+
+  set->sparse[entity] = set->count;
+  set->dense[set->count++] = entity;
+
+  return 0;
+}
+
+int sparse_set_remove(struct sparse_set *set, size_t entity) {
+  size_t dense_for_entity = set->sparse[entity];
+  if (dense_for_entity == SIZE_MAX) {
+    return -1;
+  }
+
+  set->sparse[entity] = SIZE_MAX;
+  if (dense_for_entity == --set->count) {
+    return 0;
+  }
+
+  size_t sparse_for_last = set->dense[set->count];
+  set->sparse[sparse_for_last] = dense_for_entity;
+  set->dense[dense_for_entity] = sparse_for_last;
+
+  return 0;
+}
+
+void sparse_set_free(struct sparse_set *set) {
+  free(set->sparse);
+  free(set->dense);
+  free(set);
+}
+
+void sparse_set_print(struct sparse_set *set) {
+  printf("idx\t");
+  for (size_t i = 0; i < set->capacity; i++) {
+    printf("%zu ", i);
+  }
+
+  printf("\nsparse\t");
+  for (size_t j = 0; j < set->capacity; j++) {
+    if (set->sparse[j] != SIZE_MAX)
+      printf("%zu ", set->sparse[j]);
+    else
+      printf("  ");
+  }
+
+  printf("\ndense\t");
+  for (size_t k = 0; k < set->count; k++) {
+    printf("%zu ", set->dense[k]);
+  }
+
+  printf("\n");
+  fflush(stdout);
+}

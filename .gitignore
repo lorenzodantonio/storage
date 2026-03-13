@@ -1,0 +1,7 @@
+*.o
+storage
+test_runner
+*.gcda
+*.gcno
+out/
+coverage.info
