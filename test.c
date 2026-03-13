@@ -1,6 +1,7 @@
 #include "test_component_registry.h"
 #include "test_datastructure.h"
 #include "test_entity_registry.h"
+#include "test_storage.h"
 
 #include <stdio.h>
 
@@ -33,6 +34,9 @@ int main(void) {
   // component_registry
   component_registry_new__succeeds();
   component_registry_add__succeeds();
+
+  // storage
+  storage_new__succeeds();
 
   return 0;
 }
