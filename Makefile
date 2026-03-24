@@ -19,7 +19,6 @@ test:
 	./test_runner
 
 coverage: test
-coverage: test
 	lcov --capture --directory . --output-file coverage.info --rc branch_coverage=1
 	lcov --remove coverage.info '$(PWD)/test*' --output-file coverage.info --rc branch_coverage=1
 	genhtml coverage.info --output-directory out --rc branch_coverage=1
