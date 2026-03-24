@@ -59,25 +59,24 @@ void sparse_set_free(struct sparse_set *set) {
   free(set);
 }
 
-void sparse_set_print(struct sparse_set *set) {
+void sparse_set_print(struct sparse_set set) {
   printf("idx\t");
-  for (size_t i = 0; i < set->capacity; i++) {
+  for (size_t i = 0; i < set.capacity; i++) {
     printf("%zu ", i);
   }
 
   printf("\nsparse\t");
-  for (size_t j = 0; j < set->capacity; j++) {
-    if (set->sparse[j] != SIZE_MAX)
-      printf("%zu ", set->sparse[j]);
+  for (size_t j = 0; j < set.capacity; j++) {
+    if (set.sparse[j] != SIZE_MAX)
+      printf("%zu ", set.sparse[j]);
     else
       printf("  ");
   }
 
   printf("\ndense\t");
-  for (size_t k = 0; k < set->count; k++) {
-    printf("%zu ", set->dense[k]);
+  for (size_t k = 0; k < set.count; k++) {
+    printf("%zu ", set.dense[k]);
   }
 
   printf("\n");
-  fflush(stdout);
 }
