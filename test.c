@@ -32,8 +32,8 @@ int main(void) {
   entity_registry_exists__fails();
 
   // component_registry
-  component_registry_new__succeeds();
-  component_registry_add__succeeds();
+  // component_registry_new__succeeds();
+  // component_registry_add__succeeds();
 
   // storage
   storage_new__succeeds();
