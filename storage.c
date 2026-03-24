@@ -26,3 +26,7 @@ void storage_free(struct storage *s) {
   component_registry_free(s->components);
   free(s);
 }
+
+size_t storage_register_component(struct storage *storage, size_t size) {
+  return component_registry_add(storage->components, size, 12);
+}
