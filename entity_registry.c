@@ -36,6 +36,7 @@ size_t entity_registry_next(struct entity_registry *registry) {
   if (registry->freed.count > 0) {
     id = registry->freed.dense[--(registry->freed.count)];
     registry->freed.sparse[id] = SIZE_MAX;
+    registry->freed.count--;
   } else {
     id = registry->head++;
   }
