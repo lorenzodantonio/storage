@@ -1,11 +1,13 @@
-FROM gcc:latest AS builder
+FROM gcc:latest AS core_builder
 COPY . /usr/src/storage
 WORKDIR /usr/src/storage
+
+FROM core_builder AS builder
 RUN make build
 
-FROM builder AS tester
+FROM core_builder AS tester
 RUN apt-get update && apt-get install -y lcov
-RUN make test
+CMD ["make", "test"]
 
 FROM debian:bookworm-slim
 WORKDIR /root/
