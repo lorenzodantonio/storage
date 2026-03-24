@@ -17,6 +17,17 @@ void entity_registry_delete__succeeds(void) {
   entity_registry_free(r);
 }
 
+void entity_registry_delete__fails_with_already_deleted_entity(void) {
+  struct entity_registry *r = entity_registry_new(16);
+  size_t e = entity_registry_next(r);
+  entity_registry_delete(r, e);
+  assert(entity_registry_exists(r, e) == 0);
+  int res = entity_registry_delete(r, e);
+  assert(res == -1);
+
+  entity_registry_free(r);
+}
+
 void entity_registry_delete__fails_if_entity_does_not_exist(void) {
   struct entity_registry *r = entity_registry_new(16);
   entity_registry_next(r);
