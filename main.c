@@ -37,14 +37,11 @@ void update_position(struct storage *storage, float dt) {
 
 void update_position_and_velocity(struct storage *storage, float dt) {
   (void)dt;
-  struct component_pool *positions =
-      component_registry_get(storage->components, position_id);
-  struct component_pool *velocities =
-      component_registry_get(storage->components, velocity_id);
 
   struct iterator iter;
-  struct component_pool *pools[2] = {positions, velocities};
-  iterator_init(&iter, 2, pools);
+  size_t match[2] = {position_id, velocity_id};
+  storage_iterator_init(storage, &iter, 2, match);
+
   while (iterator_next(&iter)) {
     Position *pos = iter.data[position_id];
     Velocity *vel = iter.data[velocity_id];
