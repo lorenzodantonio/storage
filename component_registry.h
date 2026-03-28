@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 struct component_pool {
+  size_t id;
   size_t count;
   size_t capacity;
   size_t component_size;
@@ -53,3 +54,16 @@ static inline void *component_pool_emplace(struct component_pool *pool,
 
   return component_pool_get_by_position(pool, pool->count++);
 }
+
+struct iterator {
+  size_t cursor;
+  size_t entity;
+  size_t component_count;
+  struct component_pool *leader;
+  struct component_pool *followers[63];
+  void *data[64];
+};
+
+void iterator_init(struct iterator *iter, size_t component_count,
+                   struct component_pool **pools);
+int iterator_next(struct iterator *iter);

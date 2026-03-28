@@ -35,6 +35,24 @@ void update_position(struct storage *storage, float dt) {
   }
 }
 
+void update_position_and_velocity(struct storage *storage, float dt) {
+  (void)dt;
+  struct component_pool *positions =
+      component_registry_get(storage->components, position_id);
+  struct component_pool *velocities =
+      component_registry_get(storage->components, velocity_id);
+
+  struct iterator iter;
+  struct component_pool *pools[2] = {positions, velocities};
+  iterator_init(&iter, 2, pools);
+  while (iterator_next(&iter)) {
+    Position *pos = iter.data[position_id];
+    Velocity *vel = iter.data[velocity_id];
+    pos->y += vel->vy;
+    vel->vy--;
+  }
+}
+
 int main(void) {
   struct storage *storage = storage_new(16);
   initialize(storage);
@@ -69,8 +87,18 @@ int main(void) {
   pos2->x = 23;
   pos2->y = 43;
 
-  for (size_t i = 0; i < 100; i++) {
+  size_t id4 = entity_registry_next(storage->entities);
+  Position *p = component_pool_emplace(positions, id4);
+  p->x = 2;
+  p->y = 0;
+
+  Velocity *v = component_pool_emplace(velocities, id4);
+  v->vx = 2;
+  v->vy = 0;
+
+  for (size_t i = 0; i < 10; i++) {
     update_position(storage, 0);
+    update_position_and_velocity(storage, 0);
   }
   component_registry_print(storage->components);
   fflush(stdout);
